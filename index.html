@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Driva · Apresentações</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: radial-gradient(1200px 800px at 70% -10%, #0a4a72 0%, #003355 45%, #001f33 100%);
+    color: #fff; min-height: 100vh; padding: 64px 24px;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; }
+  .top { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+  .logo { width: 34px; height: 44px; }
+  .brand { font-size: 15px; font-weight: 700; letter-spacing: .5px; color: #b8cfe0; text-transform: uppercase; }
+  h1 { font-size: 44px; font-weight: 800; letter-spacing: -1px; margin: 22px 0 12px; line-height: 1.1; }
+  h1 .accent { color: #f97316; }
+  .sub { font-size: 18px; color: #9bb8cf; max-width: 560px; line-height: 1.55; margin-bottom: 48px; }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 22px; }
+  .card {
+    display: flex; flex-direction: column; background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08); border-radius: 18px; padding: 26px;
+    text-decoration: none; color: inherit; transition: all .25s; position: relative; overflow: hidden;
+  }
+  .card.live:hover { transform: translateY(-4px); border-color: rgba(249,115,22,0.5); background: rgba(249,115,22,0.06); }
+  .card .ico { width: 46px; height: 46px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; margin-bottom: 18px; }
+  .card.live .ico { background: rgba(249,115,22,0.18); }
+  .card.soon .ico { background: rgba(255,255,255,0.06); filter: grayscale(1); opacity:.7; }
+  .tag { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; padding: 4px 9px; border-radius: 99px; margin-bottom: 12px; width: fit-content; }
+  .tag.live { background: rgba(34,197,94,0.16); color: #6ee7a8; border: 1px solid rgba(34,197,94,0.35); }
+  .tag.soon { background: rgba(255,255,255,0.06); color: #8fa9bf; border: 1px solid rgba(255,255,255,0.12); }
+  .card h3 { font-size: 21px; font-weight: 700; margin-bottom: 8px; }
+  .card p { font-size: 14px; color: #9bb8cf; line-height: 1.55; flex: 1; }
+  .card .cta { margin-top: 18px; font-size: 14px; font-weight: 600; color: #f97316; display: flex; align-items: center; gap: 6px; }
+  .card.soon { cursor: default; }
+  .card.soon h3, .card.soon p { color: #6f93ad; }
+  .card.soon .cta { color: #6f93ad; }
+  .foot { margin-top: 56px; font-size: 13px; color: #5f7f99; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <svg class="logo" viewBox="0 0 18 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M17.9026 22.0671C17.6621 22.5785 17.0479 22.8004 16.5316 22.5617C16.3711 22.4874 16.2384 22.377 16.1399 22.2456L16.1058 22.1973L13.4444 18.4327L12.0158 16.4115L11.0037 14.9786L10.9615 14.9191L10.6392 14.4629L6.40173 8.46706L16.2973 0.241802L16.3134 0.228787C16.6109 -0.00983 17.0318 -0.07491 17.4024 0.09615C17.7743 0.26783 17.9949 0.63165 17.9999 1.0122V21.6903V21.6928C17.9931 21.8192 17.9615 21.9457 17.9044 22.0671H17.9026Z" fill="#fff"/>
+      <path d="M10.961 14.9185C10.8618 14.7883 10.7298 14.6799 10.5705 14.6055C10.4124 14.5323 10.2457 14.502 10.0827 14.5094L10.0028 14.5168L8.24566 14.6693L1.16888 15.2823L1.08458 15.2891C0.922818 15.2965 0.757334 15.2662 0.599907 15.1937C0.0799 14.9532 -0.14508 14.3414 0.09788 13.8264C0.152417 13.7099 0.226792 13.6082 0.314183 13.5239L0.432564 13.4254L5.76339 8.99512L6.39992 8.46582L10.9597 14.9179L10.961 14.9185Z" fill="#fff" opacity="0.7"/>
+      <path d="M11.3924 20.0119C11.3316 20.1402 11.248 20.2505 11.1482 20.3398L11.1035 20.377L7.49636 23.3755L7.42942 23.4307C7.13316 23.6581 6.72224 23.7176 6.35904 23.5497C6.00328 23.3854 5.78635 23.0458 5.76404 22.6832V17.8501C5.769 17.7174 5.79999 17.5829 5.86073 17.4553C6.01319 17.1317 6.31441 16.9241 6.646 16.8751L6.77306 16.864L9.00555 16.67L9.05575 16.6663C9.22186 16.6564 9.39354 16.6855 9.5553 16.7605C9.71707 16.8349 9.84971 16.9464 9.94887 17.0791L11.2641 18.9378L11.3366 19.0413C11.5126 19.3314 11.5436 19.6902 11.3924 20.0107V20.0119Z" fill="#F97316"/>
+    </svg>
+    <span class="brand">Driva · Apresentações</span>
+  </div>
+
+  <h1>Demos de <span class="accent">produto</span></h1>
+  <p class="sub">Protótipos navegáveis das features em construção. Clique para abrir a demonstração interativa.</p>
+
+  <div class="grid">
+    <!-- PRODUTO REAL -->
+    <a class="card live" href="./base-ia-feature/">
+      <div class="ico">✨</div>
+      <span class="tag live">● Ao vivo</span>
+      <h3>Copilot Ativo</h3>
+      <p>A IA que lê o RFV das suas notas fiscais e age pela carteira — avisa quando um cliente valioso esfria, aponta o vendedor e gera a abordagem.</p>
+      <span class="cta">Abrir demonstração →</span>
+    </a>
+
+    <!-- PLACEHOLDERS — adicione novos produtos copiando o bloco acima -->
+    <div class="card soon">
+      <div class="ico">🗺️</div>
+      <span class="tag soon">Em breve</span>
+      <h3>Atlas · Inteligência de Mercado</h3>
+      <p>Mapas customizados por cliente: cobertura, penetração e território com choropleth dinâmico.</p>
+      <span class="cta">Em breve</span>
+    </div>
+
+    <div class="card soon">
+      <div class="ico">📊</div>
+      <span class="tag soon">Em breve</span>
+      <h3>Positivação</h3>
+      <p>Régua automática de reativação por carteira, faixas de recência e disparo no WhatsApp.</p>
+      <span class="cta">Em breve</span>
+    </div>
+  </div>
+
+  <div class="foot">© Driva · uso interno — apresentações de produto</div>
+</div>
+</body>
+</html>
