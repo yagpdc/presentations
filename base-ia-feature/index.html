@@ -3,146 +3,116 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Copilot Ativo — Driva</title>
+<title>Copilot Ativo · Driva</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;450;500;600&display=swap" rel="stylesheet">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    background: radial-gradient(1200px 800px at 70% -10%, #0a4a72 0%, #003355 45%, #001f33 100%);
-    color: #fff; min-height: 100vh; display: flex; align-items: center; justify-content: center;
-    padding: 40px 24px; overflow-x: hidden;
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{
+    --orange:#f97316; --ink:#0a0c11; --fg:#eef2f6; --muted:#8a97a6;
+    --font-h:'Space Grotesk',sans-serif; --font-b:'Inter',sans-serif;
   }
-  .stage {
-    width: 100%; max-width: 1180px; display: grid;
-    grid-template-columns: 1fr 360px; gap: 64px; align-items: center;
+  html{-webkit-font-smoothing:antialiased}
+  body{
+    font-family:var(--font-b); color:var(--fg); min-height:100vh;
+    display:flex; align-items:center; justify-content:center; padding:48px 40px;
+    background:
+      radial-gradient(900px 500px at 12% -8%, rgba(249,115,22,0.10), transparent 60%),
+      radial-gradient(900px 600px at 100% 8%, rgba(21,137,222,0.10), transparent 55%),
+      var(--ink);
   }
-  /* ── Esquerda: conceito ── */
-  .badge {
-    display: inline-flex; align-items: center; gap: 7px;
-    background: rgba(249,115,22,0.15); border: 1px solid rgba(249,115,22,0.4);
-    color: #ffb877; font-size: 12px; font-weight: 600; letter-spacing: .3px;
-    padding: 6px 13px; border-radius: 99px; margin-bottom: 22px;
-  }
-  .badge .dot { width: 7px; height: 7px; border-radius: 99px; background: #f97316; animation: pulse 1.6s infinite; }
-  @keyframes pulse { 0%,100%{opacity:1; transform:scale(1)} 50%{opacity:.4; transform:scale(1.4)} }
-  h1 { font-size: 46px; font-weight: 800; line-height: 1.08; letter-spacing: -1px; margin-bottom: 18px; }
-  h1 .accent { color: #f97316; }
-  .desc {
-    font-size: 18px; line-height: 1.6; color: #b8cfe0; max-width: 440px; min-height: 90px;
-    transition: opacity .35s, transform .35s;
-  }
-  .desc.swap { opacity: 0; transform: translateY(8px); }
-  .scene-label { font-size: 13px; font-weight: 700; color: #f97316; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
-  .dots { display: flex; gap: 10px; margin-top: 34px; }
-  .dots button {
-    height: 9px; width: 9px; border-radius: 99px; border: none; cursor: pointer;
-    background: rgba(255,255,255,0.25); transition: all .3s; padding: 0;
-  }
-  .dots button.active { width: 28px; background: #f97316; }
-  .foot { margin-top: 40px; font-size: 13px; color: #6f93ad; }
-  .foot b { color: #b8cfe0; font-weight: 600; }
+  .stage{width:100%;max-width:1080px;display:grid;grid-template-columns:1fr 348px;gap:72px;align-items:center}
 
-  /* ── Direita: celular ── */
-  .phone {
-    width: 360px; height: 720px; background: #111; border-radius: 44px; padding: 12px;
-    box-shadow: 0 40px 80px -20px rgba(0,0,0,0.6), 0 0 0 2px rgba(255,255,255,0.06);
-    position: relative;
+  /* ── Esquerda ── */
+  .back{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-h);font-size:13px;font-weight:500;color:var(--muted);text-decoration:none;letter-spacing:.03em;transition:color .25s;margin-bottom:34px}
+  .back:hover{color:var(--orange)}
+  .back svg{transition:transform .25s}
+  .back:hover svg{transform:translateX(-3px)}
+  .kicker{font-family:var(--font-h);font-size:13px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--orange);margin-bottom:16px}
+  h1{font-family:var(--font-h);font-weight:700;font-size:clamp(40px,5vw,58px);letter-spacing:-.02em;line-height:1.02;margin-bottom:22px}
+  h1 .o{color:var(--orange)}
+  .scene-label{font-family:var(--font-h);font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--orange);margin-bottom:12px;transition:opacity .35s,transform .35s}
+  .desc{font-size:18px;line-height:1.62;color:#aebccb;max-width:440px;min-height:96px;transition:opacity .35s,transform .35s}
+  .scene-label.swap,.desc.swap{opacity:0;transform:translateY(8px)}
+  .desc b{color:#fff;font-weight:600}
+  .dots{display:flex;gap:10px;margin-top:32px}
+  .dots button{height:9px;width:9px;border-radius:99px;border:none;cursor:pointer;background:rgba(255,255,255,.22);transition:all .3s;padding:0}
+  .dots button.active{width:28px;background:var(--orange)}
+  .foot{margin-top:40px;font-size:13px;color:#56616e}
+  .foot b{color:#aebccb;font-weight:500}
+
+  /* ── Telefone (moldura fina) ── */
+  .phone{
+    width:348px;height:712px;border-radius:46px;padding:6px;position:relative;
+    background:linear-gradient(160deg,#2c313b,#15171c);
+    box-shadow:0 50px 100px -34px rgba(0,0,0,.85), 0 0 0 1px rgba(255,255,255,.08), inset 0 0 0 1px rgba(255,255,255,.05);
   }
-  .notch { position:absolute; top:12px; left:50%; transform:translateX(-50%); width:130px; height:26px; background:#111; border-radius:0 0 18px 18px; z-index:5; }
-  .screen { width: 100%; height: 100%; border-radius: 33px; overflow: hidden; display: flex; flex-direction: column; background: #efeae2; }
+  .island{position:absolute;top:15px;left:50%;transform:translateX(-50%);width:92px;height:21px;background:#000;border-radius:99px;z-index:6}
+  .screen{width:100%;height:100%;border-radius:40px;overflow:hidden;display:flex;flex-direction:column;background:#efeae2}
 
-  /* WhatsApp chat */
-  .wa-header { background: #008069; padding: 14px 16px; display: flex; align-items: center; gap: 12px; flex-shrink: 0; padding-top: 30px; }
-  .wa-avatar { width: 40px; height: 40px; border-radius: 99px; background: #fff; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-  .wa-title { font-size: 15px; font-weight: 600; color: #fff; line-height: 1.2; }
-  .wa-sub { font-size: 11px; color: rgba(255,255,255,0.75); }
-  .wa-sub .online { color: #c5f0c5; }
-
-  .wa-body {
-    flex: 1; padding: 16px 14px; display: flex; flex-direction: column; gap: 9px; overflow-y: auto;
-    background-image: linear-gradient(rgba(229,221,213,0.5), rgba(229,221,213,0.5)), url("data:image/svg+xml,%3Csvg width='40' height='40' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='2' cy='2' r='1' fill='%23d4ccc0'/%3E%3C/svg%3E");
-  }
-  .wa-body::-webkit-scrollbar { width: 0; }
-
-  .bubble {
-    max-width: 86%; border-radius: 9px; padding: 8px 11px; font-size: 13.5px; line-height: 1.45;
-    color: #111b21; box-shadow: 0 1px 1px rgba(0,0,0,0.08); position: relative;
-    animation: pop .3s ease-out; white-space: pre-wrap;
-  }
-  @keyframes pop { from{opacity:0; transform:translateY(8px)} to{opacity:1; transform:translateY(0)} }
-  .row { display: flex; }
-  .row.user { justify-content: flex-end; }
-  .row.bot { justify-content: flex-start; }
-  .bubble.user { background: #d9fdd3; border-top-right-radius: 2px; }
-  .bubble.bot { background: #fff; border-top-left-radius: 2px; }
-  .meta { display: flex; align-items: center; justify-content: flex-end; gap: 4px; margin-top: 3px; }
-  .meta .time { font-size: 9px; color: #667781; }
-  .meta .check { color: #53bdeb; font-size: 11px; }
-
-  /* card de insight */
-  .card { border-radius: 9px; overflow: hidden; margin: 2px 0 4px; border: 1px solid #ececec; }
-  .card-head { display: flex; align-items: center; gap: 7px; padding: 8px 10px; font-size: 12px; font-weight: 700; }
-  .card-head.alert { background: #fef2f2; color: #b42318; }
-  .card-head.opp { background: #fff7ed; color: #c2410c; }
-  .card-head.data { background: #eff6ff; color: #1e5fb4; }
-  .card-body { background: #f7f7f7; padding: 9px 11px; display: flex; flex-direction: column; gap: 6px; }
-  .kv { display: flex; justify-content: space-between; gap: 10px; font-size: 12px; }
-  .kv .k { color: #6b7280; } .kv .v { color: #111b21; font-weight: 600; text-align: right; }
-  .kv .v.bad { color: #b42318; } .kv .v.good { color: #15803d; }
-  .li { display: flex; gap: 7px; font-size: 12px; color: #374151; align-items: flex-start; }
-  .li .b { color: #f97316; line-height: 1.3; }
-
-  /* quick replies */
-  .qr { display: flex; flex-direction: column; gap: 4px; margin-top: 4px; width: 86%; }
-  .qr div { background: #fff; border-radius: 8px; text-align: center; padding: 8px; font-size: 12.5px; font-weight: 600; color: #00a884; box-shadow: 0 1px 1px rgba(0,0,0,0.08); transition: all .18s; }
-  .qr div.pressed { background: #e7f8f0; color: #008069; transform: scale(.97); }
-
-  /* typing */
-  .typing { background:#fff; border-radius:9px; border-top-left-radius:2px; padding:11px 14px; display:inline-flex; gap:4px; box-shadow:0 1px 1px rgba(0,0,0,0.08); }
-  .typing span { width:7px; height:7px; border-radius:99px; background:#9aa6ac; animation:tb 1.2s infinite; }
+  /* WhatsApp */
+  .wa-header{background:#008069;padding:34px 16px 13px;display:flex;align-items:center;gap:12px;flex-shrink:0}
+  .wa-avatar{width:40px;height:40px;border-radius:99px;background:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .wa-title{font-size:15px;font-weight:600;color:#fff;line-height:1.2;font-family:var(--font-b)}
+  .wa-sub{font-size:11px;color:rgba(255,255,255,.78)} .wa-sub .on{color:#c5f0c5}
+  .wa-body{flex:1;padding:16px 14px;display:flex;flex-direction:column;gap:9px;overflow-y:auto;
+    background-image:linear-gradient(rgba(229,221,213,0.55),rgba(229,221,213,0.55)),url("data:image/svg+xml,%3Csvg width='40' height='40' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='2' cy='2' r='1' fill='%23d4ccc0'/%3E%3C/svg%3E")}
+  .wa-body::-webkit-scrollbar{width:0}
+  .bubble{max-width:86%;border-radius:9px;padding:8px 11px;font-size:13.5px;line-height:1.45;color:#111b21;box-shadow:0 1px 1px rgba(0,0,0,0.08);animation:pop .3s ease-out;white-space:pre-wrap}
+  @keyframes pop{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  .row{display:flex} .row.user{justify-content:flex-end} .row.bot{justify-content:flex-start}
+  .bubble.user{background:#d9fdd3;border-top-right-radius:2px} .bubble.bot{background:#fff;border-top-left-radius:2px}
+  .meta{display:flex;align-items:center;justify-content:flex-end;gap:4px;margin-top:3px}
+  .meta .time{font-size:9px;color:#667781} .meta .check{color:#53bdeb;font-size:11px}
+  .card{border-radius:9px;overflow:hidden;margin:2px 0 4px;border:1px solid #ececec}
+  .card-head{display:flex;align-items:center;gap:7px;padding:8px 10px;font-size:12px;font-weight:700}
+  .card-head.alert{background:#fef2f2;color:#b42318} .card-head.opp{background:#fff7ed;color:#c2410c} .card-head.data{background:#eff6ff;color:#1e5fb4}
+  .card-body{background:#f7f7f7;padding:9px 11px;display:flex;flex-direction:column;gap:6px}
+  .kv{display:flex;justify-content:space-between;gap:10px;font-size:12px}
+  .kv .k{color:#6b7280} .kv .v{color:#111b21;font-weight:600;text-align:right} .kv .v.bad{color:#b42318} .kv .v.good{color:#15803d}
+  .li{display:flex;gap:7px;font-size:12px;color:#374151;align-items:flex-start} .li .b{color:#f97316;line-height:1.3}
+  .qr{display:flex;flex-direction:column;gap:4px;margin-top:4px;width:86%}
+  .qr div{background:#fff;border-radius:8px;text-align:center;padding:8px;font-size:12.5px;font-weight:600;color:#00a884;box-shadow:0 1px 1px rgba(0,0,0,0.08);transition:all .18s}
+  .qr div.pressed{background:#e7f8f0;color:#008069;transform:scale(.97)}
+  .typing{background:#fff;border-radius:9px;border-top-left-radius:2px;padding:11px 14px;display:inline-flex;gap:4px;box-shadow:0 1px 1px rgba(0,0,0,0.08)}
+  .typing span{width:7px;height:7px;border-radius:99px;background:#9aa6ac;animation:tb 1.2s infinite}
   .typing span:nth-child(2){animation-delay:.2s} .typing span:nth-child(3){animation-delay:.4s}
-  @keyframes tb { 0%,60%,100%{transform:translateY(0); opacity:.5} 30%{transform:translateY(-5px); opacity:1} }
+  @keyframes tb{0%,60%,100%{transform:translateY(0);opacity:.5}30%{transform:translateY(-5px);opacity:1}}
+  .wa-input{background:#f0f2f5;padding:9px 12px;display:flex;align-items:center;gap:8px;flex-shrink:0}
+  .wa-input .field{flex:1;background:#fff;border-radius:99px;padding:9px 14px;font-size:12px;color:#667781}
+  .wa-input .send{width:36px;height:36px;border-radius:99px;background:#008069;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 
-  .wa-input { background: #f0f2f5; padding: 9px 12px; display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
-  .wa-input .field { flex: 1; background: #fff; border-radius: 99px; padding: 9px 14px; font-size: 12px; color: #667781; }
-  .wa-input .send { width: 36px; height: 36px; border-radius: 99px; background: #008069; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-
-  @media (max-width: 920px) {
-    .stage { grid-template-columns: 1fr; gap: 36px; justify-items: center; text-align: center; }
-    .left { order: 2; } .right { order: 1; } h1 { font-size: 34px; } .desc { min-height: auto; }
-    .dots { justify-content: center; }
-  }
+  @media(max-width:920px){.stage{grid-template-columns:1fr;gap:40px;justify-items:center;text-align:center}.left{order:2}.right{order:1}.desc{min-height:auto;margin:0 auto}.dots{justify-content:center}.back{display:none}}
 </style>
 </head>
 <body>
 <div class="stage">
-  <!-- ESQUERDA: conceito -->
   <div class="left">
-    <span class="badge"><span class="dot"></span> Próxima jornada · IA no Atlas</span>
-    <h1>Copilot <span class="accent">Ativo</span></h1>
+    <a class="back" href="../"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg> Produtos</a>
+    <div class="kicker">Demonstração</div>
+    <h1>Copilot <span class="o">Ativo</span></h1>
     <div class="scene-label" id="sceneLabel">Insights ativos · RFV</div>
-    <p class="desc" id="desc">O Copilot lê o <b style="color:#fff">RFV de cada cliente nas suas notas fiscais</b> (recência, frequência, valor) e avisa quando um cliente valioso sai do padrão — antes de virar perda.</p>
+    <p class="desc" id="desc">O Copilot lê o <b>RFV de cada cliente nas suas notas fiscais</b> (recência, frequência, valor) e avisa quando um cliente valioso sai do padrão — antes de virar perda.</p>
     <div class="dots" id="dots"></div>
     <div class="foot">Mesma base · mesmo WhatsApp · agora com um <b>agente</b> que age sozinho.</div>
   </div>
 
-  <!-- DIREITA: celular -->
   <div class="right">
     <div class="phone">
-      <div class="notch"></div>
+      <div class="island"></div>
       <div class="screen">
         <div class="wa-header">
           <div class="wa-avatar">
             <svg width="17" height="23" viewBox="0 0 18 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="position:relative;left:-2px">
-              <path d="M17.9026 22.0671C17.6621 22.5785 17.0479 22.8004 16.5316 22.5617C16.3711 22.4874 16.2384 22.377 16.1399 22.2456L16.1058 22.1973L13.4444 18.4327L12.0158 16.4115L11.0037 14.9786L10.9615 14.9191L10.6392 14.4629L6.40173 8.46706L16.2973 0.241802L16.3134 0.228787C16.6109 -0.00983 17.0318 -0.07491 17.4024 0.09615C17.7743 0.26783 17.9949 0.63165 17.9999 1.0122V21.6903V21.6928C17.9931 21.8192 17.9615 21.9457 17.9044 22.0671H17.9026Z" fill="#003355"/>
-              <path d="M10.961 14.9185C10.8618 14.7883 10.7298 14.6799 10.5705 14.6055C10.4124 14.5323 10.2457 14.502 10.0827 14.5094L10.0028 14.5168L8.24566 14.6693L1.16888 15.2823L1.08458 15.2891C0.922818 15.2965 0.757334 15.2662 0.599907 15.1937C0.0799 14.9532 -0.14508 14.3414 0.09788 13.8264C0.152417 13.7099 0.226792 13.6082 0.314183 13.5239L0.432564 13.4254L5.76339 8.99512L6.39992 8.46582L10.9597 14.9179L10.961 14.9185Z" fill="#003355"/>
-              <path d="M11.3924 20.0119C11.3316 20.1402 11.248 20.2505 11.1482 20.3398L11.1035 20.377L7.49636 23.3755L7.42942 23.4307C7.13316 23.6581 6.72224 23.7176 6.35904 23.5497C6.00328 23.3854 5.78635 23.0458 5.76404 22.6832V17.8501C5.769 17.7174 5.79999 17.5829 5.86073 17.4553C6.01319 17.1317 6.31441 16.9241 6.646 16.8751L6.77306 16.864L9.00555 16.67L9.05575 16.6663C9.22186 16.6564 9.39354 16.6855 9.5553 16.7605C9.71707 16.8349 9.84971 16.9464 9.94887 17.0791L11.2641 18.9378L11.3366 19.0413C11.5126 19.3314 11.5436 19.6902 11.3924 20.0107V20.0119Z" fill="#F97316"/>
+              <path d="M17.9026 22.0671C17.6621 22.5785 17.0479 22.8004 16.5316 22.5617C16.3711 22.4874 16.2384 22.377 16.1399 22.2456L16.1058 22.1973L6.40173 8.46706L16.2973 0.241802C16.6109 -0.00983 17.0318 -0.07491 17.4024 0.09615C17.7743 0.26783 17.9949 0.63165 17.9999 1.0122V21.6928C17.9931 21.8192 17.9615 21.9457 17.9044 22.0671H17.9026Z" fill="#003355"/>
+              <path d="M10.961 14.9185C10.8618 14.7883 10.7298 14.6799 10.5705 14.6055C10.4124 14.5323 10.2457 14.502 10.0827 14.5094L10.0028 14.5168L1.16888 15.2823L1.08458 15.2891C0.922818 15.2965 0.757334 15.2662 0.599907 15.1937C0.0799 14.9532 -0.14508 14.3414 0.09788 13.8264C0.152417 13.7099 0.226792 13.6082 0.314183 13.5239L0.432564 13.4254L6.39992 8.46582L10.9597 14.9179L10.961 14.9185Z" fill="#003355" opacity="0.7"/>
+              <path d="M11.3924 20.0119C11.3316 20.1402 11.248 20.2505 11.1482 20.3398L11.1035 20.377L7.42942 23.4307C7.13316 23.6581 6.72224 23.7176 6.35904 23.5497C6.00328 23.3854 5.78635 23.0458 5.76404 22.6832V17.8501C5.769 17.7174 5.79999 17.5829 5.86073 17.4553C6.01319 17.1317 6.31441 16.9241 6.646 16.8751L6.77306 16.864L9.05575 16.6663C9.22186 16.6564 9.39354 16.6855 9.5553 16.7605C9.71707 16.8349 9.84971 16.9464 9.94887 17.0791L11.3366 19.0413C11.5126 19.3314 11.5436 19.6902 11.3924 20.0107V20.0119Z" fill="#F97316"/>
             </svg>
           </div>
           <div>
             <div class="wa-title">Driva Copilot</div>
-            <div class="wa-sub"><span class="online">●</span> Assistente de vendas</div>
+            <div class="wa-sub"><span class="on">●</span> Assistente de vendas</div>
           </div>
         </div>
         <div class="wa-body" id="chat"></div>
@@ -160,7 +130,7 @@ const T = '14:32';
 const SCENARIOS = [
   {
     label: 'Insights ativos · RFV',
-    desc: 'O Copilot lê o <b style="color:#fff">RFV de cada cliente nas suas notas fiscais</b> (recência, frequência, valor) e avisa quando um cliente valioso sai do padrão — antes de virar perda.',
+    desc: 'O Copilot lê o <b>RFV de cada cliente nas suas notas fiscais</b> (recência, frequência, valor) e avisa quando um cliente valioso sai do padrão — antes de virar perda.',
     msgs: [
       { s:'bot', t:'🔔 Bom dia, João! Um cliente de alto valor saiu do padrão de compra.', d:600 },
       { s:'bot', card:{ head:'alert', icon:'⚠️', title:'Cliente valioso esfriando',
@@ -172,7 +142,7 @@ const SCENARIOS = [
   },
   {
     label: 'Converse com as notas',
-    desc: 'Pergunte em <b style="color:#fff">linguagem natural</b>. O Copilot cruza suas notas fiscais — recência, frequência e valor — e responde na hora, já com o vendedor responsável.',
+    desc: 'Pergunte em <b>linguagem natural</b>. O Copilot cruza suas notas fiscais — recência, frequência e valor — e responde na hora, já com o vendedor responsável.',
     msgs: [
       { s:'user', t:'quais clientes que mais faturavam caíram nos últimos 60 dias?', d:400 },
       { s:'bot', t:'Cruzando suas notas fiscais...', d:900 },
@@ -184,7 +154,7 @@ const SCENARIOS = [
   },
   {
     label: 'Padrão & vendedor certo',
-    desc: 'O Copilot detecta <b style="color:#fff">padrões de recompra quebrados</b> em toda a carteira e já aponta o vendedor responsável — direto do histórico de notas.',
+    desc: 'O Copilot detecta <b>padrões de recompra quebrados</b> em toda a carteira e já aponta o vendedor responsável — direto do histórico de notas.',
     msgs: [
       { s:'bot', t:'💡 Encontrei um padrão de recompra quebrado.', d:600 },
       { s:'bot', card:{ head:'opp', icon:'🔁', title:'Recompra interrompida',
@@ -195,80 +165,33 @@ const SCENARIOS = [
   },
 ];
 
-const chat = document.getElementById('chat');
-const descEl = document.getElementById('desc');
-const labelEl = document.getElementById('sceneLabel');
-const dotsEl = document.getElementById('dots');
-let runToken = 0;
-
-SCENARIOS.forEach((_, i) => {
-  const b = document.createElement('button');
-  b.onclick = () => play(i);
-  dotsEl.appendChild(b);
-});
-const sleep = ms => new Promise(r => setTimeout(r, ms));
-
-function setActive(i){ [...dotsEl.children].forEach((d,j)=>d.classList.toggle('active', j===i)); }
-
-function bubble(s, html){
-  const row = document.createElement('div'); row.className = 'row ' + s;
-  const bub = document.createElement('div'); bub.className = 'bubble ' + s;
-  bub.innerHTML = html + `<div class="meta"><span class="time">${T}</span>${s==='user'?'<span class="check">✓✓</span>':''}</div>`;
-  row.appendChild(bub); chat.appendChild(row); chat.scrollTop = chat.scrollHeight;
-  return row;
-}
-function cardHTML(c){
-  let inner = '';
-  if(c.kv) inner = c.kv.map(([k,v,cls])=>`<div class="kv"><span class="k">${k}</span><span class="v ${cls||''}">${v}</span></div>`).join('');
-  if(c.li) inner = c.li.map(x=>`<div class="li"><span class="b">▸</span><span>${x}</span></div>`).join('');
-  return `<div class="card"><div class="card-head ${c.head}">${c.icon} ${c.title}</div><div class="card-body">${inner}</div></div>`;
-}
-async function typing(){
-  const row = document.createElement('div'); row.className='row bot';
-  row.innerHTML = '<div class="typing"><span></span><span></span><span></span></div>';
-  chat.appendChild(row); chat.scrollTop = chat.scrollHeight;
-  await sleep(750); row.remove(); return;
-}
-
+const chat=document.getElementById('chat'),descEl=document.getElementById('desc'),labelEl=document.getElementById('sceneLabel'),dotsEl=document.getElementById('dots');
+let runToken=0;
+SCENARIOS.forEach((_,i)=>{const b=document.createElement('button');b.onclick=()=>play(i);dotsEl.appendChild(b)});
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+function setActive(i){[...dotsEl.children].forEach((d,j)=>d.classList.toggle('active',j===i))}
+function bubble(s,html){const row=document.createElement('div');row.className='row '+s;const b=document.createElement('div');b.className='bubble '+s;b.innerHTML=html+`<div class="meta"><span class="time">${T}</span>${s==='user'?'<span class="check">✓✓</span>':''}</div>`;row.appendChild(b);chat.appendChild(row);chat.scrollTop=chat.scrollHeight;return row}
+function cardHTML(c){let inner='';if(c.kv)inner=c.kv.map(([k,v,cls])=>`<div class="kv"><span class="k">${k}</span><span class="v ${cls||''}">${v}</span></div>`).join('');if(c.li)inner=c.li.map(x=>`<div class="li"><span class="b">▸</span><span>${x}</span></div>`).join('');return `<div class="card"><div class="card-head ${c.head}">${c.icon} ${c.title}</div><div class="card-body">${inner}</div></div>`}
+async function typing(){const row=document.createElement('div');row.className='row bot';row.innerHTML='<div class="typing"><span></span><span></span><span></span></div>';chat.appendChild(row);chat.scrollTop=chat.scrollHeight;await sleep(750);row.remove()}
 async function play(idx){
-  const my = ++runToken;
-  setActive(idx);
-  const sc = SCENARIOS[idx];
-  // troca texto do conceito
-  descEl.classList.add('swap'); labelEl.classList.add('swap');
-  await sleep(350); if(my!==runToken) return;
-  descEl.innerHTML = sc.desc; labelEl.textContent = sc.label;
-  descEl.classList.remove('swap'); labelEl.classList.remove('swap');
-  chat.innerHTML = '';
-  await sleep(300);
-
+  const my=++runToken;setActive(idx);const sc=SCENARIOS[idx];
+  descEl.classList.add('swap');labelEl.classList.add('swap');
+  await sleep(350);if(my!==runToken)return;
+  descEl.innerHTML=sc.desc;labelEl.textContent=sc.label;descEl.classList.remove('swap');labelEl.classList.remove('swap');
+  chat.innerHTML='';await sleep(300);
   for(const m of sc.msgs){
-    if(my!==runToken) return;
-    if(m.s === 'bot') await typing();
-    if(my!==runToken) return;
-    await sleep(m.d || 600);
-    if(my!==runToken) return;
+    if(my!==runToken)return;
+    if(m.s==='bot')await typing();
+    if(my!==runToken)return;
+    await sleep(m.d||600);if(my!==runToken)return;
     if(m.qr){
-      const wrap = document.createElement('div'); wrap.className='row bot';
-      const qr = document.createElement('div'); qr.className='qr';
-      qr.innerHTML = m.qr.map(x=>`<div>${x}</div>`).join('');
-      wrap.appendChild(qr); chat.appendChild(wrap); chat.scrollTop = chat.scrollHeight;
-      await sleep(900); if(my!==runToken) return;
-      if(m.press!=null){ qr.children[m.press].classList.add('pressed');
-        await sleep(500);
-        // ecoa como msg do user
-        bubble('user', m.qr[m.press]); await sleep(400);
-      }
-    } else {
-      let html = '';
-      if(m.card) html += cardHTML(m.card);
-      if(m.t) html += m.t;
-      bubble(m.s, html);
-    }
+      const wrap=document.createElement('div');wrap.className='row bot';const qr=document.createElement('div');qr.className='qr';
+      qr.innerHTML=m.qr.map(x=>`<div>${x}</div>`).join('');wrap.appendChild(qr);chat.appendChild(wrap);chat.scrollTop=chat.scrollHeight;
+      await sleep(900);if(my!==runToken)return;
+      if(m.press!=null){qr.children[m.press].classList.add('pressed');await sleep(500);bubble('user',m.qr[m.press]);await sleep(400)}
+    }else{let html='';if(m.card)html+=cardHTML(m.card);if(m.t)html+=m.t;bubble(m.s,html)}
   }
-  // hold + próximo
-  await sleep(3200); if(my!==runToken) return;
-  play((idx+1) % SCENARIOS.length);
+  await sleep(3200);if(my!==runToken)return;play((idx+1)%SCENARIOS.length);
 }
 play(0);
 </script>
