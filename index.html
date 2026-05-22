@@ -6,87 +6,71 @@
 <title>Driva · Produtos</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;450;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;450;500&display=swap" rel="stylesheet">
 <style>
   *{margin:0;padding:0;box-sizing:border-box}
   :root{
-    --orange:#f97316; --orange-lt:#ff9e54; --blue:#003355; --blue-lt:#1591de;
-    --ink:#0a0c11; --fg:#eef2f6; --muted:#8a97a6;
+    --orange:#f97316; --blue-lt:#1591de; --ink:#0a0c11; --fg:#eef2f6; --muted:#8a97a6;
     --font-h:'Space Grotesk',sans-serif; --font-b:'Inter',sans-serif;
   }
   html{-webkit-font-smoothing:antialiased}
   body{
-    font-family:var(--font-b); color:var(--fg); min-height:100vh;
+    font-family:var(--font-b); color:var(--fg); min-height:100vh; display:flex; flex-direction:column;
     background:
       radial-gradient(900px 500px at 12% -8%, rgba(249,115,22,0.10), transparent 60%),
-      radial-gradient(900px 600px at 100% 10%, rgba(21,137,222,0.10), transparent 55%),
+      radial-gradient(900px 600px at 100% 8%, rgba(21,137,222,0.10), transparent 55%),
       var(--ink);
-    padding:72px 32px 96px;
+    padding:64px 40px 56px;
   }
-  .wrap{max-width:1120px;margin:0 auto}
+  .wrap{max-width:1000px;margin:0 auto;width:100%;flex:1;display:flex;flex-direction:column}
 
-  /* ── Header ── */
-  .top{display:flex;align-items:center;gap:11px;margin-bottom:46px}
-  .top svg{width:30px;height:39px}
-  .top .name{font-family:var(--font-h);font-weight:600;font-size:15px;letter-spacing:.04em;color:#c4d0db}
+  /* Header enxuto */
+  .top{display:flex;align-items:center;gap:11px;margin-bottom:64px}
+  .top svg{width:28px;height:36px}
+  .top .name{font-family:var(--font-h);font-weight:600;font-size:14px;letter-spacing:.05em;color:#c4d0db}
   .top .name b{color:#fff}
-  h1{font-family:var(--font-h);font-weight:700;font-size:52px;letter-spacing:-.02em;line-height:1.04;margin-bottom:16px}
-  h1 .o{color:var(--orange)}
-  .lead{font-size:17px;color:var(--muted);max-width:520px;line-height:1.6;margin-bottom:54px}
 
-  /* ── Grid ── */
-  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(258px,1fr));gap:30px}
+  .kicker{font-family:var(--font-h);font-size:13px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--orange);margin-bottom:18px}
 
-  .card{
-    display:block;text-decoration:none;color:inherit;
-    aspect-ratio:4/5;perspective:1100px;position:relative;
-  }
-  .cover{
-    position:absolute;inset:0;border-radius:20px;overflow:hidden;
-    background:linear-gradient(150deg,var(--g1),var(--g2) 52%,var(--g3));
-    transform-style:preserve-3d;will-change:transform;
-    transition:transform .5s cubic-bezier(.2,.8,.25,1),box-shadow .5s;
-    box-shadow:0 12px 30px -12px rgba(0,0,0,.7);
-    display:flex;flex-direction:column;justify-content:space-between;padding:22px;
-  }
-  /* textura de pontos sutil */
-  .cover::before{
-    content:'';position:absolute;inset:0;opacity:.5;mix-blend-mode:overlay;
-    background-image:radial-gradient(rgba(255,255,255,.5) .8px, transparent .8px);
-    background-size:13px 13px;pointer-events:none;
-  }
-  /* brilho que segue o cursor */
-  .shine{
-    position:absolute;inset:-1px;pointer-events:none;border-radius:20px;
-    background:radial-gradient(380px circle at var(--mx,50%) var(--my,0%), rgba(255,255,255,.40), rgba(255,255,255,0) 42%);
-    opacity:0;transition:opacity .35s;z-index:3;
-  }
-  .card:hover .shine{opacity:1}
-  .card:hover .cover{box-shadow:0 30px 60px -18px rgba(0,0,0,.85)}
+  /* Lista editorial */
+  .list{list-style:none;border-top:1px solid rgba(255,255,255,.10)}
+  .item{border-bottom:1px solid rgba(255,255,255,.10);transition:opacity .3s ease}
+  .list:hover .item:not(:hover){opacity:.32}
+  .item a, .item .blk{display:block;text-decoration:none;color:inherit;padding:30px 4px;cursor:pointer}
+  .item.soon .blk{cursor:default}
 
-  .c-top{display:flex;align-items:center;justify-content:space-between;position:relative;z-index:2}
-  .ico{
-    width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;
-    font-size:26px;background:rgba(255,255,255,.16);backdrop-filter:blur(4px);
-    border:1px solid rgba(255,255,255,.22);
+  .head{display:flex;align-items:baseline;gap:20px}
+  .num{font-family:var(--font-h);font-size:15px;font-weight:500;color:var(--muted);width:32px;flex-shrink:0;letter-spacing:.05em}
+  .title{
+    font-family:var(--font-h);font-weight:600;letter-spacing:-.02em;line-height:1;
+    font-size:clamp(38px,6.2vw,68px);color:#fff;transition:color .3s,transform .4s cubic-bezier(.2,.8,.25,1);
   }
-  .pill{font-size:11px;font-weight:600;letter-spacing:.04em;padding:5px 10px;border-radius:99px;
-    background:rgba(0,0,0,.28);border:1px solid rgba(255,255,255,.25);color:#fff;display:flex;align-items:center;gap:6px}
-  .pill .live{width:7px;height:7px;border-radius:99px;background:#5ef08a;box-shadow:0 0 8px #5ef08a;animation:bl 1.6s infinite}
+  .item:hover .title{color:var(--orange)}
+  .item:hover .head .title{transform:translateX(8px)}
+  .badge{font-family:var(--font-b);font-size:11px;font-weight:600;letter-spacing:.04em;padding:5px 11px;border-radius:99px;align-self:center;display:flex;align-items:center;gap:6px}
+  .badge.live{background:rgba(94,240,138,.12);border:1px solid rgba(94,240,138,.4);color:#7cf3a3}
+  .badge.live .d{width:7px;height:7px;border-radius:99px;background:#5ef08a;box-shadow:0 0 8px #5ef08a;animation:bl 1.6s infinite}
+  .badge.soon{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16);color:#9fb0c0}
   @keyframes bl{0%,100%{opacity:1}50%{opacity:.35}}
 
-  .c-bot{position:relative;z-index:2}
-  .c-bot h3{font-family:var(--font-h);font-weight:600;font-size:23px;letter-spacing:-.01em;margin-bottom:7px;color:#fff;text-shadow:0 1px 12px rgba(0,0,0,.3)}
-  .c-bot p{font-size:13.5px;line-height:1.5;color:rgba(255,255,255,.85)}
-  .c-bot .go{margin-top:14px;display:inline-flex;align-items:center;gap:7px;font-weight:600;font-size:13.5px;color:#fff}
-  .c-bot .go svg{transition:transform .3s}
-  .card:hover .c-bot .go svg{transform:translateX(4px)}
+  /* Reveal animado (descrição + seta) */
+  .reveal{display:grid;grid-template-rows:0fr;opacity:0;transition:grid-template-rows .45s cubic-bezier(.2,.8,.25,1),opacity .35s ease;}
+  .reveal>div{overflow:hidden;padding-left:52px}
+  .item:hover .reveal{grid-template-rows:1fr;opacity:1}
+  .desc{font-size:17px;line-height:1.6;color:#aebccb;max-width:560px;margin-top:18px}
+  .go{margin-top:18px;display:inline-flex;align-items:center;gap:10px;font-family:var(--font-h);font-weight:600;font-size:15px;color:#fff}
+  .go .arrow{width:38px;height:38px;border-radius:99px;display:flex;align-items:center;justify-content:center;background:var(--orange);transition:transform .35s cubic-bezier(.2,.8,.25,1)}
+  .item:hover .go .arrow{transform:translateX(6px)}
+  .item.soon .go{color:var(--muted)}
+  .item.soon .go .arrow{background:rgba(255,255,255,.12)}
 
-  .card.soon{cursor:default}
-  .card.soon .cover{filter:saturate(.65) brightness(.82)}
+  .foot{max-width:1000px;margin:48px auto 0;width:100%;font-size:13px;color:#56616e}
 
-  .foot{margin-top:60px;font-size:13px;color:#56616e}
-  @media(max-width:560px){h1{font-size:38px}body{padding:48px 20px 64px}}
+  @media(max-width:600px){
+    body{padding:40px 22px}
+    .reveal>div{padding-left:0}
+    .num{display:none}
+  }
 </style>
 </head>
 <body>
@@ -100,83 +84,44 @@
     <span class="name"><b>Driva</b> · Produtos</span>
   </div>
 
-  <h1>Demonstrações de <span class="o">produto</span></h1>
-  <p class="lead">Protótipos navegáveis das features em construção. Passe o mouse e clique para abrir a demo interativa.</p>
+  <div class="kicker">Demonstrações</div>
 
-  <div class="grid">
-    <!-- PRODUTO REAL -->
-    <a class="card" data-tilt href="./base-ia-feature/" style="--g1:#ffae6b;--g2:#f97316;--g3:#9c3d08">
-      <div class="shine"></div>
-      <div class="cover">
-        <div class="c-top">
-          <div class="ico">✨</div>
-          <span class="pill"><span class="live"></span> Ao vivo</span>
+  <ul class="list">
+    <!-- 01 — PRODUTO REAL -->
+    <li class="item">
+      <a href="./base-ia-feature/">
+        <div class="head">
+          <span class="num">01</span>
+          <h2 class="title">Copilot Ativo</h2>
+          <span class="badge live"><span class="d"></span> Ao vivo</span>
         </div>
-        <div class="c-bot">
-          <h3>Copilot Ativo</h3>
-          <p>A IA que lê o RFV das suas notas fiscais e age pela carteira — avisa quando um cliente valioso esfria.</p>
-          <span class="go">Abrir demo <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        <div class="reveal"><div>
+          <p class="desc">A IA que lê o RFV das suas notas fiscais e age pela carteira — avisa quando um cliente valioso esfria, aponta o vendedor responsável e gera a abordagem.</p>
+          <span class="go">Ver demonstração
+            <span class="arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          </span>
+        </div></div>
+      </a>
+    </li>
+
+    <!-- 02 — EM BREVE -->
+    <li class="item soon">
+      <div class="blk">
+        <div class="head">
+          <span class="num">02</span>
+          <h2 class="title">Atlas · Mercado</h2>
+          <span class="badge soon">Em breve</span>
         </div>
+        <div class="reveal"><div>
+          <p class="desc">Mapas de inteligência por cliente: cobertura, penetração e território com choropleth dinâmico — direto sobre a base da Driva.</p>
+          <span class="go">Em breve
+            <span class="arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#aebccb" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          </span>
+        </div></div>
       </div>
-    </a>
-
-    <!-- EM BREVE (mesmo visual) -->
-    <div class="card soon" data-tilt style="--g1:#1591de;--g2:#0a5a92;--g3:#002a44">
-      <div class="shine"></div>
-      <div class="cover">
-        <div class="c-top">
-          <div class="ico">🗺️</div>
-          <span class="pill">Em breve</span>
-        </div>
-        <div class="c-bot">
-          <h3>Atlas · Mercado</h3>
-          <p>Mapas por cliente: cobertura, penetração e território com choropleth dinâmico.</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="card soon" data-tilt style="--g1:#2dd4a7;--g2:#0e7c63;--g3:#04332a">
-      <div class="shine"></div>
-      <div class="cover">
-        <div class="c-top">
-          <div class="ico">📊</div>
-          <span class="pill">Em breve</span>
-        </div>
-        <div class="c-bot">
-          <h3>Positivação</h3>
-          <p>Régua automática de reativação por carteira e faixas de recência, direto no WhatsApp.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="foot">© Driva · uso interno — demonstrações de produto</div>
+    </li>
+  </ul>
 </div>
-
-<script>
-  // Tilt 3D + brilho seguindo o cursor — leve e sem libs
-  document.querySelectorAll('[data-tilt]').forEach(card => {
-    const cover = card.querySelector('.cover');
-    const shine = card.querySelector('.shine');
-    let raf = null;
-    card.addEventListener('mousemove', e => {
-      const r = card.getBoundingClientRect();
-      const px = (e.clientX - r.left) / r.width;
-      const py = (e.clientY - r.top) / r.height;
-      if (raf) cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(() => {
-        const rx = (0.5 - py) * 10;   // inclina no eixo X
-        const ry = (px - 0.5) * 12;   // inclina no eixo Y
-        cover.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg) translateY(-6px)`;
-        shine.style.setProperty('--mx', (px*100).toFixed(1) + '%');
-        shine.style.setProperty('--my', (py*100).toFixed(1) + '%');
-      });
-    });
-    card.addEventListener('mouseleave', () => {
-      if (raf) cancelAnimationFrame(raf);
-      cover.style.transform = '';
-    });
-  });
-</script>
+<div class="foot">© Driva · uso interno — demonstrações de produto</div>
 </body>
 </html>
