@@ -44,11 +44,13 @@
 
   /* ── Telefone (moldura fina) ── */
   .phone{
-    width:348px;height:712px;border-radius:46px;padding:6px;position:relative;
+    width:348px;height:712px;border-radius:46px;padding:6px;position:relative;cursor:pointer;
     background:linear-gradient(160deg,#2c313b,#15171c);
     box-shadow:0 50px 100px -34px rgba(0,0,0,.85), 0 0 0 1px rgba(255,255,255,.08), inset 0 0 0 1px rgba(255,255,255,.05);
   }
   .island{position:absolute;top:15px;left:50%;transform:translateX(-50%);width:92px;height:21px;background:#000;border-radius:99px;z-index:6}
+  .pause-pill{position:absolute;top:44px;right:16px;z-index:7;background:rgba(0,0,0,.55);backdrop-filter:blur(4px);color:#fff;font-family:var(--font-b);font-size:11px;font-weight:600;padding:5px 10px;border-radius:99px;display:flex;align-items:center;gap:5px;opacity:0;transform:translateY(-4px);transition:opacity .25s,transform .25s;pointer-events:none}
+  .phone.paused .pause-pill{opacity:1;transform:translateY(0)}
   .screen{width:100%;height:100%;border-radius:40px;overflow:hidden;display:flex;flex-direction:column;background:#efeae2}
 
   /* WhatsApp */
@@ -101,6 +103,7 @@
   <div class="right">
     <div class="phone">
       <div class="island"></div>
+      <div class="pause-pill">⏸ Pausado</div>
       <div class="screen">
         <div class="wa-header">
           <div class="wa-avatar">
@@ -166,9 +169,14 @@ const SCENARIOS = [
 ];
 
 const chat=document.getElementById('chat'),descEl=document.getElementById('desc'),labelEl=document.getElementById('sceneLabel'),dotsEl=document.getElementById('dots');
-let runToken=0;
-SCENARIOS.forEach((_,i)=>{const b=document.createElement('button');b.onclick=()=>play(i);dotsEl.appendChild(b)});
-const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const phone=document.querySelector('.phone');
+let runToken=0, paused=false, waiters=[];
+// gate de pausa: cada sleep espera o portão abrir antes e depois do tempo
+const gate=()=>paused?new Promise(r=>waiters.push(r)):Promise.resolve();
+function setPaused(p){paused=p;phone.classList.toggle('paused',p);if(!p){const w=waiters;waiters=[];w.forEach(r=>r())}}
+phone.addEventListener('click',()=>setPaused(!paused));
+SCENARIOS.forEach((_,i)=>{const b=document.createElement('button');b.onclick=()=>{setPaused(false);play(i)};dotsEl.appendChild(b)});
+const sleep=ms=>gate().then(()=>new Promise(r=>setTimeout(r,ms))).then(gate);
 function setActive(i){[...dotsEl.children].forEach((d,j)=>d.classList.toggle('active',j===i))}
 function bubble(s,html){const row=document.createElement('div');row.className='row '+s;const b=document.createElement('div');b.className='bubble '+s;b.innerHTML=html+`<div class="meta"><span class="time">${T}</span>${s==='user'?'<span class="check">✓✓</span>':''}</div>`;row.appendChild(b);chat.appendChild(row);chat.scrollTop=chat.scrollHeight;return row}
 function cardHTML(c){let inner='';if(c.kv)inner=c.kv.map(([k,v,cls])=>`<div class="kv"><span class="k">${k}</span><span class="v ${cls||''}">${v}</span></div>`).join('');if(c.li)inner=c.li.map(x=>`<div class="li"><span class="b">▸</span><span>${x}</span></div>`).join('');return `<div class="card"><div class="card-head ${c.head}">${c.icon} ${c.title}</div><div class="card-body">${inner}</div></div>`}
