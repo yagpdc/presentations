@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mapa Sandbox · Driva</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;450;500;600&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{--orange:#f97316;--blue:#1591de;--ink:#0a0c11;--fg:#eef2f6;--muted:#8a97a6;
+    --font-h:'Space Grotesk',sans-serif;--font-b:'Inter',sans-serif}
+  html{-webkit-font-smoothing:antialiased}
+  body{font-family:var(--font-b);color:var(--fg);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:48px 40px;
+    background:radial-gradient(900px 500px at 12% -8%,rgba(249,115,22,.10),transparent 60%),radial-gradient(900px 600px at 100% 8%,rgba(21,137,222,.10),transparent 55%),var(--ink)}
+  .stage{width:100%;max-width:1140px;display:grid;grid-template-columns:330px 1fr;gap:56px;align-items:center}
+
+  /* Esquerda */
+  .back{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-h);font-size:13px;font-weight:500;color:var(--muted);text-decoration:none;letter-spacing:.03em;transition:color .25s;margin-bottom:32px}
+  .back:hover{color:var(--orange)} .back svg{transition:transform .25s} .back:hover svg{transform:translateX(-3px)}
+  .kicker{font-family:var(--font-h);font-size:13px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--orange);margin-bottom:16px}
+  h1{font-family:var(--font-h);font-weight:700;font-size:clamp(38px,4.6vw,54px);letter-spacing:-.02em;line-height:1.03;margin-bottom:22px}
+  h1 .o{color:var(--orange)}
+  .scene-label{font-family:var(--font-h);font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--orange);margin-bottom:12px;transition:opacity .35s,transform .35s}
+  .desc{font-size:17px;line-height:1.6;color:#aebccb;max-width:330px;min-height:104px;transition:opacity .35s,transform .35s}
+  .scene-label.swap,.desc.swap{opacity:0;transform:translateY(8px)}
+  .desc b{color:#fff;font-weight:600}
+  .dots{display:flex;gap:9px;margin-top:30px}
+  .dots button{height:9px;width:9px;border-radius:99px;border:none;cursor:pointer;background:rgba(255,255,255,.22);transition:all .3s;padding:0}
+  .dots button.active{width:26px;background:var(--orange)}
+  .foot{margin-top:38px;font-size:13px;color:#56616e}.foot b{color:#aebccb;font-weight:500}
+
+  /* App frame */
+  .app{width:100%;aspect-ratio:8/5.2;border-radius:16px;overflow:hidden;position:relative;cursor:pointer;
+    background:#11141b;border:1px solid rgba(255,255,255,.09);box-shadow:0 50px 100px -34px rgba(0,0,0,.85);display:flex;flex-direction:column}
+  .bar{height:42px;flex-shrink:0;display:flex;align-items:center;gap:8px;padding:0 14px;background:#161a22;border-bottom:1px solid rgba(255,255,255,.07)}
+  .bar .d{width:11px;height:11px;border-radius:99px}.bar .d1{background:#ff5f57}.bar .d2{background:#febc2e}.bar .d3{background:#28c840}
+  .bar .ttl{font-family:var(--font-h);font-size:12.5px;color:#9fb0c0;margin-left:8px;letter-spacing:.02em}
+  .bar .save{margin-left:auto;font-family:var(--font-h);font-size:12px;font-weight:600;color:#fff;background:var(--orange);padding:6px 14px;border-radius:8px;transition:box-shadow .3s,transform .2s}
+  .app.saving .save{box-shadow:0 0 0 4px rgba(249,115,22,.25);transform:scale(1.05)}
+  .body{flex:1;display:flex;min-height:0}
+
+  /* Wizard */
+  .wizard{width:42%;border-right:1px solid rgba(255,255,255,.07);padding:18px;display:flex;flex-direction:column;gap:14px;overflow:hidden}
+  .steps{display:flex;flex-direction:column;gap:2px}
+  .step{display:flex;align-items:center;gap:10px;padding:7px 9px;border-radius:9px;transition:background .3s}
+  .step .n{width:22px;height:22px;border-radius:99px;display:flex;align-items:center;justify-content:center;font-family:var(--font-h);font-size:11px;font-weight:600;flex-shrink:0;
+    background:rgba(255,255,255,.08);color:var(--muted);transition:all .3s}
+  .step .nm{font-size:13px;color:var(--muted);transition:color .3s;font-weight:500}
+  .step.active{background:rgba(249,115,22,.10)} .step.active .n{background:var(--orange);color:#fff} .step.active .nm{color:#fff}
+  .step.done .n{background:rgba(94,240,138,.18);color:#5ef08a} .step.done .nm{color:#9fb0c0}
+  .panel{flex:1;border-top:1px solid rgba(255,255,255,.07);padding-top:14px;min-height:0}
+  .panel-title{font-family:var(--font-h);font-size:12px;font-weight:600;color:#c4d0db;margin-bottom:12px;letter-spacing:.02em}
+  .stag>*{opacity:0;animation:su .45s ease-out forwards}
+  .stag>*:nth-child(1){animation-delay:.05s}.stag>*:nth-child(2){animation-delay:.18s}.stag>*:nth-child(3){animation-delay:.31s}.stag>*:nth-child(4){animation-delay:.44s}
+  @keyframes su{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  .chip{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:#dbe6f0;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);padding:6px 11px;border-radius:99px;margin:0 6px 7px 0}
+  .chip .x{color:var(--orange);font-weight:700}
+  .seg{display:flex;gap:5px;margin-bottom:11px}
+  .seg span{font-size:11.5px;padding:6px 10px;border-radius:7px;background:rgba(255,255,255,.06);color:var(--muted);border:1px solid transparent}
+  .seg span.on{background:rgba(249,115,22,.16);color:#ffb877;border-color:rgba(249,115,22,.4)}
+  .field{display:flex;align-items:center;gap:9px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:9px;padding:9px 11px;font-size:13px;color:#dbe6f0;margin-bottom:9px}
+  .field .ic{opacity:.7}
+  .drop{border:1.5px dashed rgba(255,255,255,.22);border-radius:11px;padding:16px;text-align:center;font-size:12px;color:var(--muted)}
+  .prog{height:6px;border-radius:99px;background:rgba(255,255,255,.1);overflow:hidden;margin:10px 0}
+  .prog i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--blue),var(--orange));border-radius:99px;animation:fill 1.4s ease-out forwards}
+  @keyframes fill{to{width:100%}}
+  .ok{font-size:12.5px;color:#5ef08a;font-weight:500;display:flex;align-items:center;gap:6px}
+  .swatches{display:flex;gap:8px;margin-bottom:12px}
+  .sw{width:26px;height:26px;border-radius:8px;border:2px solid transparent;cursor:pointer}.sw.on{border-color:#fff}
+  .slider{height:5px;border-radius:99px;background:rgba(255,255,255,.12);position:relative;margin:14px 4px 4px}
+  .slider i{position:absolute;left:62%;top:50%;width:15px;height:15px;border-radius:99px;background:#fff;transform:translate(-50%,-50%);box-shadow:0 1px 6px rgba(0,0,0,.4)}
+  .legend{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:11px;color:var(--muted)}
+  .legend .bar2{flex:1;height:8px;border-radius:99px;background:linear-gradient(90deg,#13324d,var(--blue),var(--orange))}
+
+  /* Mapa */
+  .map{flex:1;position:relative;background:#0c0f15;overflow:hidden}
+  .tiles{position:absolute;inset:18px;display:grid;grid-template-columns:repeat(8,1fr);grid-template-rows:repeat(6,1fr);gap:6px}
+  .tile{border-radius:6px;background:rgba(255,255,255,.045);transition:background .6s ease,opacity .5s ease,box-shadow .6s}
+  .map.focus .tile:not(.region){opacity:.18}
+  .map.focus .tile.region{background:rgba(21,137,222,.16)}
+  .map.choro .tile.region{box-shadow:inset 0 0 0 1px rgba(255,255,255,.05)}
+  .pt{position:absolute;width:9px;height:9px;border-radius:99px;background:#cfd8e0;transform:translate(-50%,-50%) scale(0);
+    box-shadow:0 0 0 3px rgba(255,255,255,.12);transition:transform .45s cubic-bezier(.2,1.4,.5,1),background .5s,box-shadow .5s;opacity:0}
+  .map.pts .pt{transform:translate(-50%,-50%) scale(1);opacity:1}
+  .map.color .pt{background:var(--orange);box-shadow:0 0 0 3px rgba(249,115,22,.25),0 0 10px rgba(249,115,22,.5)}
+  .maptag{position:absolute;top:14px;left:16px;font-family:var(--font-h);font-size:11px;letter-spacing:.04em;z-index:3;color:#8090a0}
+  .mlegend{position:absolute;bottom:14px;left:16px;right:16px;display:flex;align-items:center;gap:8px;font-size:10px;color:#8090a0;opacity:0;transform:translateY(6px);transition:all .5s;z-index:3}
+  .map.choro .mlegend{opacity:1;transform:translateY(0)}
+  .mlegend .g{flex:1;height:7px;border-radius:99px;background:linear-gradient(90deg,#13324d,var(--blue),var(--orange))}
+
+  @media(max-width:980px){.stage{grid-template-columns:1fr;gap:32px}.left{order:2;text-align:center}.right{order:1}.desc{margin:0 auto;min-height:auto}.dots{justify-content:center}.back{display:none}.app{aspect-ratio:4/3}}
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="left">
+    <a class="back" href="../"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg> Produtos</a>
+    <div class="kicker">Demonstração</div>
+    <h1>Mapa <span class="o">Sandbox</span></h1>
+    <div class="scene-label" id="sceneLabel">Passo 1 · Filtros</div>
+    <p class="desc" id="desc">Qualquer usuário monta o próprio mapa num <b>wizard guiado</b> — sem código, sem pedir pra Driva.</p>
+    <div class="dots" id="dots"></div>
+    <div class="foot">Construído uma vez · vira uma <b>visão estática</b> que a equipe só consulta.</div>
+  </div>
+
+  <div class="right">
+    <div class="app" id="app">
+      <div class="bar">
+        <span class="d d1"></span><span class="d d2"></span><span class="d d3"></span>
+        <span class="ttl">Atlas · Construtor de mapa</span>
+        <span class="save">Salvar</span>
+      </div>
+      <div class="body">
+        <div class="wizard">
+          <div class="steps" id="steps"></div>
+          <div class="panel"><div class="panel-title" id="panelTitle"></div><div id="panel"></div></div>
+        </div>
+        <div class="map" id="map">
+          <span class="maptag">Pré-visualização</span>
+          <div class="tiles" id="tiles"></div>
+          <div class="mlegend"><span>menor</span><div class="g"></div><span>maior penetração</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const STEP_NAMES = ['Filtros','Localização','Base','Estética','Inteligência'];
+const STEPS = [
+  { label:'Passo 1 · Filtros', desc:'Comece pelo recorte: combine os <b>filtros da base Driva</b> — CNAE, porte, faturamento, região.',
+    title:'Filtros da base',
+    panel:`<div class="stag"><div><span class="chip">CNAE 47.11 <span class="x">×</span></span><span class="chip">Faturamento > R$ 1M <span class="x">×</span></span></div><div><span class="chip">Funcionários 10+ <span class="x">×</span></span><span class="chip">Ativa <span class="x">×</span></span></div></div>` },
+  { label:'Passo 2 · Localização', desc:'Escolha o território: <b>Brasil, região, estado ou município</b>. O mapa trava no foco escolhido.',
+    title:'Onde focar',
+    panel:`<div class="stag"><div class="seg"><span>Brasil</span><span>Região</span><span class="on">Estado</span><span>Município</span></div><div class="field"><span class="ic">📍</span> Minas Gerais</div></div>` },
+  { label:'Passo 3 · Sua base', desc:'Suba sua <b>própria base</b> (clientes, lojas) por CNPJ — vira uma camada de pontos no mapa.',
+    title:'Importar base',
+    panel:`<div class="stag"><div class="drop">Arraste seu CSV — colunas <b>cnpj</b> + <b>tipo</b></div><div class="prog"><i></i></div><div class="ok">✓ 1.420 clientes importados</div></div>` },
+  { label:'Passo 4 · Estética', desc:'Defina a cara: <b>cor, tamanho e ícone</b> de cada camada e o estilo do mapa.',
+    title:'Estilo dos pontos',
+    panel:`<div class="stag"><div class="swatches"><span class="sw" style="background:#5b7cfa"></span><span class="sw on" style="background:#f97316"></span><span class="sw" style="background:#2dd4a7"></span><span class="sw" style="background:#e74c8b"></span></div><div style="font-size:11px;color:#8a97a6">Tamanho do ponto</div><div class="slider"><i></i></div></div>` },
+  { label:'Passo 5 · Inteligência', desc:'Ative o <b>choropleth</b>: penetração, cobertura ou densidade — com faixas de cor automáticas.',
+    title:'Camada de inteligência',
+    panel:`<div class="stag"><div class="field"><span class="ic">📊</span> Métrica: Penetração %</div><div class="legend"><span>0%</span><div class="bar2"></div><span>100%</span></div></div>` },
+];
+
+// ── gera tiles + região + pontos ──
+const tilesEl=document.getElementById('tiles'), mapEl=document.getElementById('map');
+const COLS=8,ROWS=6, region=new Set();
+// blob central (formato de "estado")
+[[0,3],[0,4],[1,2],[1,3],[1,4],[1,5],[2,2],[2,3],[2,4],[2,5],[2,6],[3,3],[3,4],[3,5],[4,3],[4,4]].forEach(([r,c])=>region.add(r*COLS+c));
+const tiles=[];
+for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++){
+  const t=document.createElement('div');t.className='tile'+(region.has(r*COLS+c)?' region':'');
+  tilesEl.appendChild(t);tiles.push({el:t,region:region.has(r*COLS+c)});
+}
+// pontos sobre a região
+const PTS=[[42,18],[55,22],[34,30],[48,32],[60,33],[38,42],[52,44],[64,45],[44,54],[57,56],[36,62],[50,66],[62,64],[46,74]];
+PTS.forEach(([x,y])=>{const p=document.createElement('div');p.className='pt';p.style.left=x+'%';p.style.top=y+'%';mapEl.appendChild(p)});
+
+function paintChoro(on){
+  tiles.forEach(t=>{
+    if(!t.region) return;
+    if(on){const v=Math.random();const col=`color-mix(in srgb, #1591de ${(1-v)*100}%, #f97316)`;t.el.style.background=`rgba(0,0,0,0)`;t.el.style.background=col;t.el.style.opacity=(.45+v*.55);}
+    else{t.el.style.background='';t.el.style.opacity=''}
+  });
+}
+
+// ── render por passo (acumulativo no mapa) ──
+const stepsEl=document.getElementById('steps'),panelEl=document.getElementById('panel'),panelTitle=document.getElementById('panelTitle');
+const descEl=document.getElementById('desc'),labelEl=document.getElementById('sceneLabel'),dotsEl=document.getElementById('dots'),app=document.getElementById('app');
+STEP_NAMES.forEach((nm,i)=>{const s=document.createElement('div');s.className='step';s.innerHTML=`<span class="n">${i+1}</span><span class="nm">${nm}</span>`;stepsEl.appendChild(s)});
+STEPS.forEach((_,i)=>{const b=document.createElement('button');b.onclick=()=>{setPaused(false);startAt=i;loop()};dotsEl.appendChild(b)});
+
+let token=0,paused=false,waiters=[],startAt=0;
+const gate=()=>paused?new Promise(r=>waiters.push(r)):Promise.resolve();
+function setPaused(p){paused=p;app.classList.toggle('paused',p);if(!p){const w=waiters;waiters=[];w.forEach(r=>r())}}
+app.addEventListener('click',()=>setPaused(!paused));
+const sleep=ms=>gate().then(()=>new Promise(r=>setTimeout(r,ms))).then(gate);
+
+function render(i){
+  const sc=STEPS[i];
+  [...stepsEl.children].forEach((s,j)=>{s.classList.toggle('active',j===i);s.classList.toggle('done',j<i)});
+  [...dotsEl.children].forEach((d,j)=>d.classList.toggle('active',j===i));
+  panelTitle.textContent=sc.title; panelEl.innerHTML=sc.panel;
+  // mapa acumulativo
+  mapEl.classList.toggle('focus',i>=1);
+  mapEl.classList.toggle('pts',i>=2);
+  mapEl.classList.toggle('color',i>=3);
+  mapEl.classList.toggle('choro',i>=4);
+  paintChoro(i>=4);
+  app.classList.toggle('saving',i>=4);
+  // texto esquerda
+  descEl.classList.add('swap');labelEl.classList.add('swap');
+  setTimeout(()=>{descEl.innerHTML=sc.desc;labelEl.textContent=sc.label;descEl.classList.remove('swap');labelEl.classList.remove('swap')},250);
+}
+async function loop(){
+  const my=++token; let i=startAt; startAt=0;
+  for(;;){
+    for(;i<STEPS.length;i++){
+      if(my!==token)return;
+      render(i);
+      await sleep(i===STEPS.length-1?4200:3600);
+      if(my!==token)return;
+    }
+    // reset suave pro recomeço
+    i=0; mapEl.className='map';paintChoro(false);app.classList.remove('saving');
+    await sleep(900); if(my!==token)return;
+  }
+}
+loop();
+</script>
+</body>
+</html>
